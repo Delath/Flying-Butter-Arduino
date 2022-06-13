@@ -41,7 +41,7 @@ void loop() {
 void lightLeds1(){
     delay(40);
     for (int i = 0 ; i < 3 ; i++) {
-        leds[i+(figurePassed1*3)] = CRGB(random(255), random(255), random(255));
+        leds[i+(figurePassed1*3)] = CRGB(255, 0, 0);
         FastLED.show();
         delay(40);
     }
@@ -49,7 +49,7 @@ void lightLeds1(){
 void lightLeds2(){
     delay(40);
     for (int i = 12 ; i < 15 ; i++) {
-        leds[i+(figurePassed2*3)] = CRGB(random(255), random(255), random(255));
+        leds[i+(figurePassed2*3)] = CRGB(0, 255, 0);
         FastLED.show();
         delay(40);
     }
@@ -57,7 +57,7 @@ void lightLeds2(){
 void lightLeds3(){
     delay(40);
     for (int i = 24 ; i < 27 ; i++) {
-        leds[i+(figurePassed3*3)] = CRGB(random(255), random(255), random(255));
+        leds[i+(figurePassed3*3)] = CRGB(0, 0, 255);
         FastLED.show();
         delay(40);
     }
@@ -65,7 +65,7 @@ void lightLeds3(){
 void lightLeds4(){
     delay(40);
     for (int i = 36 ; i < 39 ; i++) {
-        leds[i+(figurePassed4*3)] = CRGB(random(255), random(255), random(255));
+        leds[i+(figurePassed4*3)] = CRGB(255, 255, 0);
         FastLED.show();
         delay(40);
     }
