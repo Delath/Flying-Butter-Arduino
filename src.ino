@@ -1,5 +1,5 @@
 #include <FastLED.h> 
-const int pinLed = 11;
+const int pinLed = 12;
 const int numLed = 50;
 CRGB leds[numLed];
 
@@ -34,9 +34,12 @@ void loop() {
 }
 
 void testLed() {
-  for (int i = 0 ; i < numLed ; i++) {
-    leds[i] = CRGB(random(255), random(255), random(255));
+    leds[0] = CRGB(random(255), random(255), random(255));
     FastLED.show();
     delay(40);
-  }
+    //for (int i = 0 ; i < numLed ; i++) {
+    //    leds[i] = CRGB(random(255), random(255), random(255));
+    //    FastLED.show();
+    //    delay(40);
+    //}
 }
