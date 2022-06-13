@@ -5,7 +5,12 @@ CRGB leds[numLed];
 
 int val=0;
 int state=0;
-int motion=0;
+//int motion=0;
+
+int figurePassed1=0;
+int figurePassed2=0;
+int figurePassed3=0;
+int figurePassed4=0;
 
 void setup() {
     Serial.begin(115200);
@@ -15,31 +20,53 @@ void setup() {
 }
 
 void loop() {
-    testLed();
-
     val = digitalRead(10);
     if(val==HIGH){
         delay(500);
         if(state==LOW){
-            motion=0;
+            //motion=0;
             state = HIGH;
         }
     }else{
         delay(500);
         if(state==HIGH){
-            motion=1;
+            //motion=1;
+            lightLeds1();
+            figurePassed1++;
             state=LOW;
         }
     }
 }
 
-void testLed() {
-    leds[0] = CRGB(random(255), random(255), random(255));
-    FastLED.show();
+void lightLeds1(){
     delay(40);
-    //for (int i = 0 ; i < numLed ; i++) {
-    //    leds[i] = CRGB(random(255), random(255), random(255));
-    //    FastLED.show();
-    //    delay(40);
-    //}
+    for (int i = 0 ; i < 3 ; i++) {
+        leds[i+(figurePassed1*3)] = CRGB(random(255), random(255), random(255));
+        FastLED.show();
+        delay(40);
+    }
+}
+void lightLeds2(){
+    delay(40);
+    for (int i = 12 ; i < 15 ; i++) {
+        leds[i+(figurePassed2*3)] = CRGB(random(255), random(255), random(255));
+        FastLED.show();
+        delay(40);
+    }
+}
+void lightLeds3(){
+    delay(40);
+    for (int i = 24 ; i < 27 ; i++) {
+        leds[i+(figurePassed3*3)] = CRGB(random(255), random(255), random(255));
+        FastLED.show();
+        delay(40);
+    }
+}
+void lightLeds4(){
+    delay(40);
+    for (int i = 36 ; i < 39 ; i++) {
+        leds[i+(figurePassed4*3)] = CRGB(random(255), random(255), random(255));
+        FastLED.show();
+        delay(40);
+    }
 }
