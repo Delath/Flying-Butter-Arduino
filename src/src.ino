@@ -5,7 +5,7 @@ CRGB leds[numLed];
 
 int CLK = 11;
 int DT = 12;
-int RotPosition = 1;
+int RotPosition = 0;
 int rotation;  
 int value;
 boolean LeftRight;
@@ -49,16 +49,16 @@ void loop() {
             Serial.println("counterclockwise");
         }
 
-        if(RotPosition==0){
-            
-        }else if(RotPosition>=1 && RotPosition<5){
-            lightGreen();
-        }else if(RotPosition>=5 && RotPosition<9){
-            lightYellow();
-        }else{
-            lightRed();
-        }
-        
+        //if(RotPosition==0){
+//
+        //}else if(RotPosition>=1 && RotPosition<5){
+        //    lightGreen();
+        //}else if(RotPosition>=5 && RotPosition<9){
+        //    lightYellow();
+        //}else{
+        //    lightRed();
+        //}
+
 
     }
     rotation = value;
