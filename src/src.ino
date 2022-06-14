@@ -31,6 +31,7 @@ void setup() {
 }
 
 void loop() {
+    delay(10)
     value = digitalRead(CLK);
     if (value != rotation){ // we use the DT pin to find out which way we turning.
         if (digitalRead(DT) != value) {  // Clockwise
