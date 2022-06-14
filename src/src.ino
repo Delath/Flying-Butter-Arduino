@@ -1,5 +1,5 @@
 #include <FastLED.h> 
-const int pinLed = 4; // or 7
+const int pinLed = 7; // or 7
 const int numLed = 50;
 CRGB leds[numLed];
 
@@ -31,7 +31,7 @@ void setup() {
 }
 
 void loop() {
-    delay(10)
+    
     value = digitalRead(CLK);
     if (value != rotation){ // we use the DT pin to find out which way we turning.
         if (digitalRead(DT) != value) {  // Clockwise
@@ -47,10 +47,9 @@ void loop() {
         }
 
         if(RotPosition==0){
-
-        }else if(RotPosition>=2 && RotPosition<10){
+        }else if(RotPosition>=1 && RotPosition<5){
             lightGreen();
-        }else if(RotPosition>=10 && RotPosition<18){
+        }else if(RotPosition>=5 && RotPosition<9){
             lightYellow();
         }else{
             lightRed();
