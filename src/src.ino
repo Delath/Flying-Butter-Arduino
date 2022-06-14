@@ -46,15 +46,15 @@ void loop() {
             Serial.println (RotPosition);
         }
 
-        //if(RotPosition==0){
-//
-        //}else if(RotPosition>=1 && RotPosition<5){
-        //    lightGreen();
-        //}else if(RotPosition>=5 && RotPosition<9){
-        //    lightYellow();
-        //}else{
-        //    lightRed();
-        //}
+        if(RotPosition==0){
+
+        }else if(RotPosition>=2 && RotPosition<10){
+            lightGreen();
+        }else if(RotPosition>=10 && RotPosition<18){
+            lightYellow();
+        }else{
+            lightRed();
+        }
 
 
     }
