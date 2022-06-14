@@ -13,7 +13,7 @@ boolean LeftRight;
 //int val=0;
 //int state=0;
 //int motionDetected=0;
-
+int flag=0;
 //int figurePassed1=0;
 //int figurePassed2=0;
 //int figurePassed3=0;
@@ -48,11 +48,20 @@ void loop() {
 
         if(RotPosition==0){
         }else if(RotPosition>=1 && RotPosition<5){
-            lightGreen();
+            if(flag!=1){
+                lightGreen();
+                flag=1;
+            }
         }else if(RotPosition>=5 && RotPosition<9){
-            lightYellow();
+            if(flag!=2){
+                lightYellow();
+                flag=2;
+            }
         }else{
-            lightRed();
+            if(flag!=3){
+                lightRed();
+                flag=3;
+            }
         }
 
 
@@ -77,27 +86,27 @@ void loop() {
 }
 
 void lightGreen(){
-    delay(40);
+    //delay(40);
     for (int i = 0 ; i < 50 ; i++) {
         leds[i] = CRGB(0, 255, 0);
         FastLED.show();
-        delay(40);
+        //delay(40);
     }
 }
 void lightYellow(){
-    delay(40);
+    //delay(40);
     for (int i = 0 ; i < 50 ; i++) {
         leds[i] = CRGB(255, 255, 0);
         FastLED.show();
-        delay(40);
+        //delay(40);
     }
 }
 void lightRed(){
-    delay(40);
+    //delay(40);
     for (int i = 0 ; i < 50 ; i++) {
         leds[i] = CRGB(255, 0, 0);
         FastLED.show();
-        delay(40);
+        //delay(40);
     }
 }
 
