@@ -47,12 +47,12 @@ void loop() {
         }
 
         if(RotPosition==0){
-        }else if(RotPosition>=1 && RotPosition<5){
+        }else if(RotPosition>=10 && RotPosition<20){
             if(flag!=1){
                 lightGreen();
                 flag=1;
             }
-        }else if(RotPosition>=5 && RotPosition<9){
+        }else if(RotPosition>=20 && RotPosition<30){
             if(flag!=2){
                 lightYellow();
                 flag=2;
