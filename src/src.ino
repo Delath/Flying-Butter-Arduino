@@ -44,7 +44,7 @@ void loop() {
         }
     }
     if(RotPosition==0){
-        
+
     }else if(RotPosition>=1 && RotPosition<5){
         lightGreen();
     }else if(RotPosition>=5 && RotPosition<9){
@@ -52,6 +52,7 @@ void loop() {
     }else{
         lightRed();
     }
+    rotation = value;
     //val = digitalRead(10);
     //if(val==HIGH){
     //    delay(500);
