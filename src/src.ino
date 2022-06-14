@@ -43,6 +43,12 @@ void loop() {
             }
         }
     }
+    if (LeftRight){// turning right will turn on red led.
+        Serial.println ("clockwise");
+    }else{// turning left will turn on green led.   
+        Serial.println("counterclockwise");
+    }
+
     if(RotPosition==0){
 
     }else if(RotPosition>=1 && RotPosition<5){
