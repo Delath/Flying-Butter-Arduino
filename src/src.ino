@@ -36,17 +36,13 @@ void loop() {
         if (digitalRead(DT) != value) {  // Clockwise
             RotPosition ++;
             LeftRight = true;
+            Serial.println (RotPosition);
         } else { //Counterclockwise
             LeftRight = false;
             if(RotPosition>0){
                 RotPosition--;
             }
-        }
-
-        if (LeftRight){// turning right will turn on red led.
-            Serial.println ("clockwise");
-        }else{// turning left will turn on green led.   
-            Serial.println("counterclockwise");
+            Serial.println (RotPosition);
         }
 
         //if(RotPosition==0){
