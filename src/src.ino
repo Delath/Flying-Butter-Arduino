@@ -84,7 +84,7 @@ void gamePhase(){
 
 void endPhase(){
     for(int i;i<num_of_winners;i++){
-        colorLeds(winner[i]);
+        colorWinners(winner[i]);
     }
     FastLED.show();
     if(digitalRead(BUTTON_PIN)==HIGH){
@@ -180,6 +180,15 @@ void colorLeds(int i, int led){
         case 3://yellow
             leds[led] = CRGB(255, 255, 0);
         break;
+    }
+}
+
+void colorWinners(int i){
+    delay(40);//Might want to adjust this value
+    for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
+        colorLeds(i, (j+(figuresPassed[i]*3)));
+        FastLED.show();
+        delay(40);//Might want to adjust this value
     }
 }
 
