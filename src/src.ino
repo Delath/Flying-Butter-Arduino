@@ -35,8 +35,10 @@ void loop() {
     value = digitalRead(CLK);
     if (value != rotation){ // we use the DT pin to find out which way we turning.
         if (digitalRead(DT) != value) {  // Clockwise
-            RotPosition ++;
             LeftRight = true;
+            if(RotPosition<70){
+                RotPosition ++;
+            }
             Serial.println (RotPosition);
         } else { //Counterclockwise
             LeftRight = false;
@@ -46,13 +48,17 @@ void loop() {
             Serial.println (RotPosition);
         }
 
-        if(RotPosition==0){
-        }else if(RotPosition>=10 && RotPosition<20){
+        if(RotPosition>=0 && RotPosition<10){
+            if(flag!=0){
+                lightOff();
+                flag=0;
+            }
+        }else if(RotPosition>=10 && RotPosition<30){
             if(flag!=1){
                 lightGreen();
                 flag=1;
             }
-        }else if(RotPosition>=20 && RotPosition<30){
+        }else if(RotPosition>=30 && RotPosition<50){
             if(flag!=2){
                 lightYellow();
                 flag=2;
@@ -84,7 +90,10 @@ void loop() {
     //    }
     //}
 }
-
+void lightOff(){
+    fastLED.clear();
+    FastLED.show();
+}
 void lightGreen(){
     //delay(40);
     for (int i = 0 ; i < 50 ; i++) {
