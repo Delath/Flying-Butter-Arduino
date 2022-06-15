@@ -102,17 +102,17 @@ void ledManager(){
         }
     }else if(RotPosition>=10 && RotPosition<30){
         if(enabler!=1){
-            ledOn("green");
+            ledOn(0);
             enabler=1;
         }
     }else if(RotPosition>=30 && RotPosition<50){
         if(enabler!=2){
-            ledOn("yellow");
+            ledOn(1);
             enabler=2;
         }
     }else{
         if(enabler!=3){
-            ledOn("red");
+            ledOn(2);
             enabler=3;
         }
     }
@@ -123,16 +123,16 @@ void ledOff(){
     FastLED.show();
 }
 
-void ledOn(String color){
+void ledOn(int color){
     for (int i = 0 ; i < 50 ; i++) {
         switch(color){
-            case "green":
+            case 0:
                 leds[i] = CRGB(0, 255, 0);
             break;
-            case "yellow":
+            case 1:
                 leds[i] = CRGB(255, 255, 0);
             break;
-            case "red":
+            case 2:
                 leds[i] = CRGB(255, 0, 0);
             break;
         }
@@ -160,25 +160,25 @@ void onFigure(int i){
     figuresPassed[i]++;
     delay(40);//Might want to adjust this value
     for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
-        colorLeds(i);
+        colorLeds(i, (j+(figuresPassed[i]*3)));
         FastLED.show();
         delay(40);//Might want to adjust this value
     }
 }
 
-void colorLeds(int i){
+void colorLeds(int i, int led){
     switch(i){
         case 0://Red
-            leds[j+(figuresPassed[i]*3)] = CRGB(255, 0, 0);
+            leds[led] = CRGB(255, 0, 0);
         break;
         case 1://Green
-            leds[j+(figuresPassed[i]*3)] = CRGB(0, 255, 0);
+            leds[led] = CRGB(0, 255, 0);
         break;
         case 2://Blue
-            leds[j+(figuresPassed[i]*3)] = CRGB(0, 0, 255);
+            leds[led] = CRGB(0, 0, 255);
         break;
         case 3://yellow
-            leds[j+(figuresPassed[i]*3)] = CRGB(255, 255, 0);
+            leds[led] = CRGB(255, 255, 0);
         break;
     }
 }
@@ -196,7 +196,7 @@ void winCheck(){
 }
 
 void prepareNewGame(){
-    phase=0
+    phase=0;
     enabler=4;
     for(int i=0;i<4;i++){
         val[i]=0;
