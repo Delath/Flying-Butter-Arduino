@@ -38,15 +38,15 @@ void setup() {
 
 void loop() {
     switch(phase){
-        case 0 -> {
+        case 0:
             configPhase();
-        }
-        case 1 -> {
+        break;
+        case 1:
             gamePhase();
-        }
-        case 2 -> {
+        break;
+        case 2:
             endPhase();
-        }
+        break;
     }
 }
 
@@ -126,15 +126,15 @@ void ledOff(){
 void ledOn(String color){
     for (int i = 0 ; i < 50 ; i++) {
         switch(color){
-            case "green" -> {
+            case "green":
                 leds[i] = CRGB(0, 255, 0);
-            }
-            case "yellow" -> {
+            break;
+            case "yellow":
                 leds[i] = CRGB(255, 255, 0);
-            }
-            case "red" -> {
+            break;
+            case "red":
                 leds[i] = CRGB(255, 0, 0);
-            }
+            break;
         }
         FastLED.show();
     }
@@ -168,18 +168,18 @@ void onFigure(int i){
 
 void colorLeds(int i){
     switch(i){
-        case 0 -> {//Red
+        case 0://Red
             leds[j+(figuresPassed[i]*3)] = CRGB(255, 0, 0);
-        }
-        case 1 -> {//Green
+        break;
+        case 1://Green
             leds[j+(figuresPassed[i]*3)] = CRGB(0, 255, 0);
-        }
-        case 2 -> {//Blue
+        break;
+        case 2://Blue
             leds[j+(figuresPassed[i]*3)] = CRGB(0, 0, 255);
-        }
-        case 3 -> {//yellow
+        break;
+        case 3://yellow
             leds[j+(figuresPassed[i]*3)] = CRGB(255, 255, 0);
-        }
+        break;
     }
 }
 
