@@ -1,161 +1,207 @@
 #include <FastLED.h> 
-const int pinLed = 7; // or 7
-const int numLed = 50;
-CRGB leds[numLed];
+#define CLK 11
+#define DT 12
+#define BUTTON_PIN 2
+#define LED_PIN 7
+#define NUM_LED 50
+#define SENSOR1_PIN 10
+#define SENSOR2_PIN 11
+#define SENSOR3_PIN 12
+#define SENSOR4_PIN 13
 
-int CLK = 11;
-int DT = 12;
-int RotPosition = 0;
+int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN}
+CRGB leds[NUM_LED];
+int phase=0;
+int RotPosition=0;
 int rotation;  
 int value;
 boolean LeftRight;
-
-//int val=0;
-//int state=0;
-//int motionDetected=0;
-int flag=0;
-//int figurePassed1=0;
-//int figurePassed2=0;
-//int figurePassed3=0;
-//int figurePassed4=0;
+int enabler=0;
+int val[4]={0,0,0,0}
+int state[4]={0,0,0,0};
+int figuresPassed[4]={0,0,0,0};
+int winner[4];
+int num_of_winners=0;
 
 void setup() {
     Serial.begin(115200);
-    FastLED.addLeds<WS2812B, pinLed, GRB>(leds, numLed);
-
+    FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LED);
+    pinMode (BUTTON_PIN, INPUT);
     pinMode (CLK,INPUT);
     pinMode (DT,INPUT);
-    rotation = digitalRead(CLK);  
-
-    //pinMode(10, INPUT_PULLUP);
+    digitalWrite (BUTTON_PIN, true);
+    rotation = digitalRead(CLK);
+    for(i=0;i<4;i++){
+        pinMode(S_pin[i], INPUT_PULLUP);
+    }
 }
 
 void loop() {
-    
+    switch(phase){
+        case 0 -> {
+            configPhase();
+        }
+        case 1 -> {
+            gamePhase();
+        }
+        case 2 -> {
+            endPhase();
+        }
+    }
+}
+
+void configPhase(){
     value = digitalRead(CLK);
-    if (value != rotation){ // we use the DT pin to find out which way we turning.
-        if (digitalRead(DT) != value) {  // Clockwise
+    if(value != rotation){
+        if(digitalRead(DT)!=value){//Clockwise
             LeftRight = true;
             if(RotPosition<70){
                 RotPosition ++;
             }
-            Serial.println (RotPosition);
-        } else { //Counterclockwise
+            //Serial.println(RotPosition); //For testing purposes, to be deleted later
+        }else{//Counterclockwise
             LeftRight = false;
             if(RotPosition>0){
                 RotPosition--;
             }
-            Serial.println (RotPosition);
+            //Serial.println(RotPosition); //For testing purposes, to be deleted later
         }
-
-        if(RotPosition>=0 && RotPosition<10){
-            if(flag!=0){
-                lightOff();
-                flag=0;
-            }
-        }else if(RotPosition>=10 && RotPosition<30){
-            if(flag!=1){
-                lightGreen();
-                flag=1;
-            }
-        }else if(RotPosition>=30 && RotPosition<50){
-            if(flag!=2){
-                lightYellow();
-                flag=2;
-            }
-        }else{
-            if(flag!=3){
-                lightRed();
-                flag=3;
-            }
-        }
-
-
+        ledManager();
     }
     rotation = value;
-    //val = digitalRead(10);
-    //if(val==HIGH){
-    //    delay(500);
-    //    if(state==LOW){
-    //        //motionDetected=0;
-    //        state = HIGH;
-    //    }
-    //}else{
-    //    delay(500);
-    //    if(state==HIGH){
-    //        //motionDetected=1;
-    //        lightLeds1();
-    //        figurePassed1++;
-    //        state=LOW;
-    //    }
-    //}
+    if(digitalRead(BUTTON_PIN)==HIGH){
+        ledOff();
+        phase=1;
+    }
 }
-void lightOff(){
+
+void gamePhase(){
+    for(int i=0;i<4;i++){
+        motionSensors(i);
+    }
+    winCheck();
+}
+
+void endPhase(){
+    for(int i;i<num_of_winners;i++){
+        colorLeds(winner[i]);
+    }
+    FastLED.show();
+    if(digitalRead(BUTTON_PIN)==HIGH){
+        ledOff();
+        prepareNewGame();
+        phase=0;
+    }
+}
+
+void ledManager(){
+    if(RotPosition>=0 && RotPosition<10){
+        if(enabler!=0){
+            ledOff();
+            enabler=0;
+        }
+    }else if(RotPosition>=10 && RotPosition<30){
+        if(enabler!=1){
+            ledOn("green");
+            enabler=1;
+        }
+    }else if(RotPosition>=30 && RotPosition<50){
+        if(enabler!=2){
+            ledOn("yellow");
+            enabler=2;
+        }
+    }else{
+        if(enabler!=3){
+            ledOn("red");
+            enabler=3;
+        }
+    }
+}
+
+void ledOff(){
     FastLED.clear();
     FastLED.show();
 }
-void lightGreen(){
-    //delay(40);
+
+void ledOn(String color){
     for (int i = 0 ; i < 50 ; i++) {
-        leds[i] = CRGB(0, 255, 0);
+        switch(color){
+            case "green" -> {
+                leds[i] = CRGB(0, 255, 0);
+            }
+            case "yellow" -> {
+                leds[i] = CRGB(255, 255, 0);
+            }
+            case "red" -> {
+                leds[i] = CRGB(255, 0, 0);
+            }
+        }
         FastLED.show();
-        //delay(40);
-    }
-}
-void lightYellow(){
-    //delay(40);
-    for (int i = 0 ; i < 50 ; i++) {
-        leds[i] = CRGB(255, 255, 0);
-        FastLED.show();
-        //delay(40);
-    }
-}
-void lightRed(){
-    //delay(40);
-    for (int i = 0 ; i < 50 ; i++) {
-        leds[i] = CRGB(255, 0, 0);
-        FastLED.show();
-        //delay(40);
     }
 }
 
-//void lightLeds1(){
-//    if(figurePassed1<4){
-//        delay(40);
-//        for (int i = 1 ; i < 4 ; i++) {
-//            leds[i+(figurePassed1*3)] = CRGB(255, 0, 0);
-//            FastLED.show();
-//            delay(40);
-//        }
-//    }
-//}
-//void lightLeds2(){
-//    if(figurePassed2<4){
-//        delay(40);
-//        for (int i = 13 ; i < 16 ; i++) {
-//            leds[i+(figurePassed2*3)] = CRGB(0, 255, 0);
-//            FastLED.show();
-//            delay(40);
-//        }
-//    }
-//}
-//void lightLeds3(){
-//    if(figurePassed3<4){
-//        delay(40);
-//        for (int i = 25 ; i < 28 ; i++) {
-//            leds[i+(figurePassed3*3)] = CRGB(0, 0, 255);
-//            FastLED.show();
-//            delay(40);
-//        }
-//    }
-//}
-//void lightLeds4(){
-//    if(figurePassed4<4){
-//        delay(40);
-//        for (int i = 37 ; i < 40 ; i++) {
-//            leds[i+(figurePassed4*3)] = CRGB(255, 255, 0);
-//            FastLED.show();
-//            delay(40);
-//        }
-//    }
-//}
+void motionSensors(int i){
+    val[i] = digitalRead(S_pin[i]);
+    if(val[i]==HIGH){
+        delay(500);//Might want to adjust this value
+        if(state[i]==LOW){
+            state[i]=HIGH;
+        }
+    }else{
+        delay(500);//Might want to adjust this value
+        if(state[i]==HIGH){
+            onFigure(i);
+            state[i]=LOW;
+        }
+    }
+}
+
+void onFigure(int i){
+    figuresPassed[i]++;
+    delay(40);//Might want to adjust this value
+    for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
+        colorLeds(i);
+        FastLED.show();
+        delay(40);//Might want to adjust this value
+    }
+}
+
+void colorLeds(int i){
+    switch(i){
+        case 0 -> {//Red
+            leds[j+(figuresPassed[i]*3)] = CRGB(255, 0, 0);
+        }
+        case 1 -> {//Green
+            leds[j+(figuresPassed[i]*3)] = CRGB(0, 255, 0);
+        }
+        case 2 -> {//Blue
+            leds[j+(figuresPassed[i]*3)] = CRGB(0, 0, 255);
+        }
+        case 3 -> {//yellow
+            leds[j+(figuresPassed[i]*3)] = CRGB(255, 255, 0);
+        }
+    }
+}
+
+void winCheck(){
+    for(int i=0;i<4;i++){
+        if(figuresPassed[i]>=4){
+            winner[0]=i;
+            num_of_winners=1;
+            break;
+        }
+    }
+    ledOff();
+    phase=2;
+}
+
+void prepareNewGame(){
+    phase=0
+    enabler=4;
+    for(int i=0;i<4;i++){
+        val[i]=0;
+        state[i]=0;
+        figuresPassed[i]=0;
+        num_of_winners=0;
+    }
+}
