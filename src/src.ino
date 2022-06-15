@@ -9,7 +9,7 @@
 #define SENSOR3_PIN 12
 #define SENSOR4_PIN 13
 
-int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN}
+int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
 int phase=0;
 int RotPosition=0;
@@ -17,7 +17,7 @@ int rotation;
 int value;
 boolean LeftRight;
 int enabler=0;
-int val[4]={0,0,0,0}
+int val[4]={0,0,0,0};
 int state[4]={0,0,0,0};
 int figuresPassed[4]={0,0,0,0};
 int winner[4];
@@ -31,7 +31,7 @@ void setup() {
     pinMode (DT,INPUT);
     digitalWrite (BUTTON_PIN, true);
     rotation = digitalRead(CLK);
-    for(i=0;i<4;i++){
+    for(int i=0;i<4;i++){
         pinMode(S_pin[i], INPUT_PULLUP);
     }
 }
