@@ -91,7 +91,7 @@ void loop() {
     //}
 }
 void lightOff(){
-    fastLED.clear();
+    FastLED.clear();
     FastLED.show();
 }
 void lightGreen(){
