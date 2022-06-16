@@ -5,7 +5,7 @@
 #define LED_PIN 7
 #define NUM_LED 50
 #define SENSOR1_PIN 10
-#define SENSOR2_PIN 11
+#define SENSOR2_PIN 6
 #define SENSOR3_PIN 12
 #define SENSOR4_PIN 13
 
@@ -74,8 +74,9 @@ void configPhase(){
         phase=1;
     }
 }
-
+// multitrading per la gestione di delay dovuti a piu sensori
 void gamePhase(){
+  Serial.println(phase);
     for(int i=0;i<4;i++){
         motionSensors(i);
     }
@@ -143,12 +144,12 @@ void ledOn(int color){
 void motionSensors(int i){
     val[i] = digitalRead(S_pin[i]);
     if(val[i]==HIGH){
-        delay(500);//Might want to adjust this value
+        delay(50);//Might want to adjust this value
         if(state[i]==LOW){
             state[i]=HIGH;
         }
     }else{
-        delay(500);//Might want to adjust this value
+       //delay(50);//Might want to adjust this value
         if(state[i]==HIGH){
             onFigure(i);
             state[i]=LOW;
@@ -197,11 +198,11 @@ void winCheck(){
         if(figuresPassed[i]>=4){
             winner[0]=i;
             num_of_winners=1;
+            ledOff();
+            phase=2;
             break;
         }
     }
-    ledOff();
-    phase=2;
 }
 
 void prepareNewGame(){
