@@ -69,7 +69,7 @@ void configPhase(){
         ledManager();
     }
     rotation = value;
-    if(digitalRead(BUTTON_PIN)==HIGH){
+    if(digitalRead(BUTTON_PIN)==LOW){
         ledOff();
         phase=1;
     }
@@ -87,7 +87,7 @@ void endPhase(){
         colorWinners(winner[i]);
     }
     FastLED.show();
-    if(digitalRead(BUTTON_PIN)==HIGH){
+    if(digitalRead(BUTTON_PIN)==LOW){
         ledOff();
         prepareNewGame();
         phase=0;
