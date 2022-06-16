@@ -4,10 +4,10 @@
 #define BUTTON_PIN 2
 #define LED_PIN 7
 #define NUM_LED 50
-#define SENSOR1_PIN 10
-#define SENSOR2_PIN 6
-#define SENSOR3_PIN 12
-#define SENSOR4_PIN 13
+#define SENSOR1_PIN 10 //red
+#define SENSOR2_PIN 6 //green
+#define SENSOR3_PIN 12 //blue
+#define SENSOR4_PIN 13 //yellow
 
 int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
@@ -76,7 +76,6 @@ void configPhase(){
 }
 // multitrading per la gestione di delay dovuti a piu sensori
 void gamePhase(){
-  Serial.println(phase);
     for(int i=0;i<4;i++){
         motionSensors(i);
     }
@@ -185,11 +184,8 @@ void colorLeds(int i, int led){
 }
 
 void colorWinners(int i){
-    delay(40);//Might want to adjust this value
     for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
         colorLeds(i, (j+(figuresPassed[i]*3)));
-        FastLED.show();
-        delay(40);//Might want to adjust this value
     }
 }
 
