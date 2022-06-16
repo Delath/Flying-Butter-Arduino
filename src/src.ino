@@ -184,8 +184,8 @@ void colorLeds(int i, int led){
 }
 
 void colorWinners(int i){
-    for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
-        colorLeds(i, (j+(figuresPassed[i]*3)));
+    for (int j = 1+(i*12) ; j < 13+(i*12) ; j++) {
+        colorLeds(i, j);
     }
 }
 
