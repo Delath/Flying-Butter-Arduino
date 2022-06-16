@@ -210,4 +210,5 @@ void prepareNewGame(){
         figuresPassed[i]=0;
         num_of_winners=0;
     }
+    ledManager();
 }
