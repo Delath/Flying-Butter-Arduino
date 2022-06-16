@@ -84,7 +84,7 @@ void gamePhase(){
 }
 
 void endPhase(){
-    for(int i;i<num_of_winners;i++){
+    for(int i=0;i<num_of_winners;i++){
         colorWinners(winner[i]);
     }
     FastLED.show();
