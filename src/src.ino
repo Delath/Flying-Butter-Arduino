@@ -157,13 +157,13 @@ void motionSensors(int i){
 }
 
 void onFigure(int i){
-    figuresPassed[i]++;
     delay(40);//Might want to adjust this value
     for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
         colorLeds(i, (j+(figuresPassed[i]*3)));
         FastLED.show();
         delay(40);//Might want to adjust this value
     }
+    figuresPassed[i]++;
 }
 
 void colorLeds(int i, int led){
