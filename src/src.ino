@@ -32,7 +32,8 @@ const int suoniFinali[][4] = {
   {suoni[2], suoni[0], suoni[2], suoni[2]},  // due led verdi
   {suoni[5], suoni[7], suoni[9], suoni[12]}, // tutti led verdi
 };
-const int BUZZER_PIN = A1;
+const int BUZZER_PIN1 = A1;
+const int BUZZER_PIN2 = A2;
 
 void setup() {
     Serial.begin(115200);
@@ -51,8 +52,8 @@ void loop() {
     switch(phase){
         case 0:
             for(int i=0;i<4;i++){
-                testSpeaker(i);
-
+                testSpeaker1(i);
+                testSpeaker2(i);
             }
             //configPhase();
         break;
@@ -228,12 +229,21 @@ void prepareNewGame(){
     ledManager();
 }
 
-void testSpeaker(int _s){
+void testSpeaker1(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
     tone(BUZZER_PIN, suoniFinali[_s][j]);
     delay(90);
   }
   delay(140);
-  noTone(BUZZER_PIN);
+  noTone(BUZZER_PIN1);
+  delay(1000);
+}
+void testSpeaker2(int _s){
+  for (byte j = 0 ; j < 4 ; j++) {
+    tone(BUZZER_PIN, suoniFinali[_s][j]);
+    delay(90);
+  }
+  delay(140);
+  noTone(BUZZER_PIN2);
   delay(1000);
 }
