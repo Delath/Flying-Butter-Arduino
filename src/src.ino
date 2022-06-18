@@ -52,8 +52,7 @@ void loop() {
     switch(phase){
         case 0:
             for(int i=0;i<4;i++){
-                testSpeaker1(i);
-                testSpeaker2(i);
+                testSpeaker(i);
             }
             //configPhase();
         break;
@@ -229,21 +228,14 @@ void prepareNewGame(){
     ledManager();
 }
 
-void testSpeaker1(int _s){
+void testSpeaker(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
     tone(BUZZER_PIN1, suoniFinali[_s][j]);
-    delay(90);
-  }
-  delay(140);
-  noTone(BUZZER_PIN1);
-  delay(1000);
-}
-void testSpeaker2(int _s){
-  for (byte j = 0 ; j < 4 ; j++) {
     tone(BUZZER_PIN2, suoniFinali[_s][j]);
     delay(90);
   }
   delay(140);
+  noTone(BUZZER_PIN1);
   noTone(BUZZER_PIN2);
   delay(1000);
 }
