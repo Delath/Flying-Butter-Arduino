@@ -56,11 +56,16 @@ void loop() {
         case 0:
             if(flag==0){
                 flag=1;
-                millis=millis();
+                Serial.println(millis())
+
+                //millis=millis();
             }
-            if((millis+2000)>millis()){
-                Serial.println("OOOOOHH")
-            }
+
+
+            
+            //if((millis+2000)>millis()){
+            //    Serial.println("OOOOOHH")
+            //}
             //for(int i=0;i<4;i++){
             //    testSpeaker(i);
             //}
