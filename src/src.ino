@@ -231,7 +231,7 @@ void prepareNewGame(){
 
 void testSpeaker1(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
-    tone(BUZZER_PIN, suoniFinali[_s][j]);
+    tone(BUZZER_PIN1, suoniFinali[_s][j]);
     delay(90);
   }
   delay(140);
@@ -240,7 +240,7 @@ void testSpeaker1(int _s){
 }
 void testSpeaker2(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
-    tone(BUZZER_PIN, suoniFinali[_s][j]);
+    tone(BUZZER_PIN2, suoniFinali[_s][j]);
     delay(90);
   }
   delay(140);
