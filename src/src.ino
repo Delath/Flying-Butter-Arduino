@@ -49,7 +49,7 @@ void setup() {
 }
 
 int flag=0;
-int millis=0;
+unsigned long tempo;
 
 void loop() {
     switch(phase){
@@ -57,15 +57,11 @@ void loop() {
             if(flag==0){
                 flag=1;
                 Serial.println(millis())
-
-                //millis=millis();
+                tempo=millis();
             }
+            delay(1000)
 
-
-            
-            //if((millis+2000)>millis()){
-            //    Serial.println("OOOOOHH")
-            //}
+            Serial.println(tempo+" OOOOOHH "+millis())
             //for(int i=0;i<4;i++){
             //    testSpeaker(i);
             //}
