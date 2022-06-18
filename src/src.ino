@@ -23,6 +23,17 @@ int figuresPassed[4]={0,0,0,0};
 int winner[4];
 int num_of_winners=0;
 
+//                      0        1         2        3         4        5        6         7        8         9       10        11       12
+const int suoni[] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523};
+//                     DO        DO#      RE       RE#        MI       FA      FA#        SOL      SOL#     LA       LA#       SI       DO
+const int suoniFinali[][4] = {
+  {suoni[2], suoni[2], suoni[0], suoni[0]},  // nessun led verde
+  {suoni[0], suoni[0], suoni[2], suoni[2]},  // un led verde
+  {suoni[2], suoni[0], suoni[2], suoni[2]},  // due led verdi
+  {suoni[5], suoni[7], suoni[9], suoni[12]}, // tutti led verdi
+};
+const int BUZZER_PIN = A1;
+
 void setup() {
     Serial.begin(115200);
     FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LED);
@@ -39,7 +50,11 @@ void setup() {
 void loop() {
     switch(phase){
         case 0:
-            configPhase();
+            for(int i=0;i<4;i++){
+                testSpeaker(i);
+
+            }
+            //configPhase();
         break;
         case 1:
             gamePhase();
@@ -211,4 +226,14 @@ void prepareNewGame(){
         num_of_winners=0;
     }
     ledManager();
+}
+
+void testSpeaker(int _s){
+  for (byte j = 0 ; j < 4 ; j++) {
+    tone(BUZZER_PIN, suoniFinali[_s][j]);
+    delay(90);
+  }
+  delay(140);
+  noTone(BUZZER_PIN);
+  delay(1000);
 }
