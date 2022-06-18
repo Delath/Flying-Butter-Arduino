@@ -54,20 +54,22 @@ unsigned long tempo;
 void loop() {
     switch(phase){
         case 0:
-            if(flag==0){
-                flag=1;
-                Serial.println(millis());
-                tempo=millis();
-            }
             delay(1000);
-            if(millis()>tempo){
-                Serial.println("il tempo passa");
-                tempo=tempo+tempo;
-
-            }
-            if(tempo>millis()){
-                Serial.println("bro assurdo");
-            }
+            Serial.println((int)millis());
+            //if(flag==0){
+            //    flag=1;
+            //    Serial.println(millis());
+            //    tempo=millis();
+            //}
+            //delay(1000);
+            //if(millis()>tempo){
+            //    Serial.println("il tempo passa");
+            //    tempo=tempo+tempo;
+//
+            //}
+            //if(tempo>millis()){
+            //    Serial.println("bro assurdo");
+            //}
             //for(int i=0;i<4;i++){
             //    testSpeaker(i);
             //}
