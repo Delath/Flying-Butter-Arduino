@@ -48,12 +48,22 @@ void setup() {
     }
 }
 
+int flag=0;
+int millis=0;
+
 void loop() {
     switch(phase){
         case 0:
-            for(int i=0;i<4;i++){
-                testSpeaker(i);
+            if(flag==0){
+                flag=1;
+                millis=millis();
             }
+            if((millis+2000)>millis()){
+                Serial.println("OOOOOHH")
+            }
+            //for(int i=0;i<4;i++){
+            //    testSpeaker(i);
+            //}
             //configPhase();
         break;
         case 1:
