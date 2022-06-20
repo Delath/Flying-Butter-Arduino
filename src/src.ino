@@ -8,6 +8,7 @@
 #define SENSOR2_PIN 6 //green
 #define SENSOR3_PIN 12 //blue
 #define SENSOR4_PIN 13 //yellow
+#define MILLIS_PER_DIFFICULTY 30000 //30 seconds per difficulty
 
 int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
@@ -22,18 +23,22 @@ int state[4]={0,0,0,0};
 int figuresPassed[4]={0,0,0,0};
 int winner[4];
 int num_of_winners=0;
+int start;
+int difficulty=0;
+int max=0;
+int flag=0;
 
-//                      0        1         2        3         4        5        6         7        8         9       10        11       12
+//                    0    1    2    3    4    5    6    7    8    9    10   11   12
 const int suoni[] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523};
-//                     DO        DO#      RE       RE#        MI       FA      FA#        SOL      SOL#     LA       LA#       SI       DO
+//                   DO   DO#   RE  RE#   MI   FA  FA#  SOL  SOL#  LA  LA#   SI   DO
 const int suoniFinali[][4] = {
-  {suoni[2], suoni[2], suoni[0], suoni[0]},  // nessun led verde
-  {suoni[0], suoni[0], suoni[2], suoni[2]},  // un led verde
-  {suoni[2], suoni[0], suoni[2], suoni[2]},  // due led verdi
-  {suoni[5], suoni[7], suoni[9], suoni[12]}, // tutti led verdi
+  {suoni[2], suoni[2], suoni[0], suoni[0]},
+  {suoni[0], suoni[0], suoni[2], suoni[2]},
+  {suoni[2], suoni[0], suoni[2], suoni[2]},
+  {suoni[5], suoni[7], suoni[9], suoni[12]},
 };
 const int BUZZER_PIN1 = A1;
-const int BUZZER_PIN2 = A2;
+//const int BUZZER_PIN2 = A2;
 
 void setup() {
     Serial.begin(115200);
@@ -48,32 +53,10 @@ void setup() {
     }
 }
 
-int flag=0;
-unsigned long tempo;
-
 void loop() {
     switch(phase){
         case 0:
-            delay(1000);
-            Serial.println((int)millis());
-            //if(flag==0){
-            //    flag=1;
-            //    Serial.println(millis());
-            //    tempo=millis();
-            //}
-            //delay(1000);
-            //if(millis()>tempo){
-            //    Serial.println("il tempo passa");
-            //    tempo=tempo+tempo;
-//
-            //}
-            //if(tempo>millis()){
-            //    Serial.println("bro assurdo");
-            //}
-            //for(int i=0;i<4;i++){
-            //    testSpeaker(i);
-            //}
-            //configPhase();
+            configPhase();
         break;
         case 1:
             gamePhase();
@@ -103,12 +86,13 @@ void configPhase(){
         ledManager();
     }
     rotation = value;
-    if(digitalRead(BUTTON_PIN)==LOW){
+    if(digitalRead(BUTTON_PIN)==LOW && difficulty!=0){
         ledOff();
+        start = (int)millis();
         phase=1;
     }
 }
-// multitrading per la gestione di delay dovuti a piu sensori
+
 void gamePhase(){
     for(int i=0;i<4;i++){
         motionSensors(i);
@@ -117,10 +101,16 @@ void gamePhase(){
 }
 
 void endPhase(){
-    for(int i=0;i<num_of_winners;i++){
-        colorWinners(winner[i]);
+    if(flag==0){
+        for(int i=0;i<num_of_winners;i++){
+            colorWinners(winner[i]);
+        }
+        FastLED.show();
+        flag=1;
     }
-    FastLED.show();
+    for(int i=0;i<4;i++){
+        soundSpeaker(i);
+    }
     if(digitalRead(BUTTON_PIN)==LOW){
         ledOff();
         prepareNewGame();
@@ -133,21 +123,25 @@ void ledManager(){
         if(enabler!=0){
             ledOff();
             enabler=0;
+            difficulty=0;
         }
     }else if(RotPosition>=10 && RotPosition<30){
         if(enabler!=1){
             ledOn(0);
             enabler=1;
+            difficulty=3;
         }
     }else if(RotPosition>=30 && RotPosition<50){
         if(enabler!=2){
             ledOn(1);
             enabler=2;
+            difficulty=2;
         }
     }else{
         if(enabler!=3){
             ledOn(2);
             enabler=3;
+            difficulty=1;
         }
     }
 }
@@ -233,6 +227,25 @@ void winCheck(){
             break;
         }
     }
+    if(start+(difficulty*MILLIS_PER_DIFFICULTY)<(int)millis()){
+        for(int i=0;i<4;i++){
+            if(figuresPassed[i]>max){
+                max=figuresPassed[i];
+            }
+        }
+        if(max==0){
+            start=(int)millis();
+            break;
+        }
+        for(int i=0;i<4;i++){
+            if(figuresPassed[i]==max){
+                winner[i]=i;
+                num_of_winners++;
+            }
+        }
+        ledOff();
+        phase=2;
+    }
 }
 
 void prepareNewGame(){
@@ -242,19 +255,21 @@ void prepareNewGame(){
         val[i]=0;
         state[i]=0;
         figuresPassed[i]=0;
-        num_of_winners=0;
     }
+    num_of_winners=0;
+    max=0;
+    flag=0;
     ledManager();
 }
 
-void testSpeaker(int _s){
+void soundSpeaker(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
     tone(BUZZER_PIN1, suoniFinali[_s][j]);
-    tone(BUZZER_PIN2, suoniFinali[_s][j]);
+    //tone(BUZZER_PIN2, suoniFinali[_s][j]);
     delay(90);
   }
   delay(140);
   noTone(BUZZER_PIN1);
-  noTone(BUZZER_PIN2);
+  //noTone(BUZZER_PIN2);
   delay(1000);
 }
