@@ -8,8 +8,8 @@
 #define SENSOR2_PIN 6 //green
 #define SENSOR3_PIN 12 //blue
 #define SENSOR4_PIN 13 //yellow
-#define MILLIS_PER_DIFFICULTY 30000 //30 seconds per difficulty
-
+//#define MILLIS_PER_DIFFICULTY 30000 //30 seconds per difficulty
+int MILLIS_PER_DIFFICULTY=30000 //30 seconds per difficulty
 int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
 int phase=0;
@@ -88,7 +88,9 @@ void configPhase(){
     rotation = value;
     if(digitalRead(BUTTON_PIN)==LOW && difficulty!=0){
         ledOff();
+        int difficultyMolt = MILLIS_PER_DIFFICULTY*difficulty;
         start = (int)millis();
+        start=start+difficultyMolt;
         phase=1;
     }
 }
@@ -227,7 +229,7 @@ void winCheck(){
             break;
         }
     }
-    if((start+(difficulty*MILLIS_PER_DIFFICULTY))<(int)millis()){
+    if(start<(int)millis()){
         Serial.println(start);
         Serial.println(difficulty);
         Serial.println((int)millis());
