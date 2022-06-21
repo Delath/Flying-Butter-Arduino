@@ -8,7 +8,7 @@
 #define SENSOR2_PIN 9 //green
 #define SENSOR3_PIN 8 //blue
 #define SENSOR4_PIN 5 //yellow
-long MILLIS_PER_DIFFICULTY=30000; //30 seconds per difficulty
+long MILLIS_PER_DIFFICULTY=10000; //30 seconds per difficulty, modificare qua per tempo
 int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
 int phase=0;
@@ -38,6 +38,7 @@ const int suoniFinali[][4] = {
 };
 const int BUZZER_PIN1 = A1;
 //const int BUZZER_PIN2 = A2;
+// PIN x speaker non si riesce a sincro
 
 void setup() {
     Serial.begin(115200);
@@ -102,9 +103,12 @@ void gamePhase(){
 void endPhase(){
     if(flag==0){
         for(int i=0;i<num_of_winners;i++){
+         
             colorWinners(winner[i]);
+            FastLED.show();
+            delay(100);
         }
-        FastLED.show();
+        
         flag=1;
     }
     for(int i=0;i<4;i++){
@@ -184,6 +188,7 @@ void motionSensors(int i){
 }
 
 void onFigure(int i){
+  
     delay(40);//Might want to adjust this value
     for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
         colorLeds(i, (j+(figuresPassed[i]*3)));
@@ -234,13 +239,15 @@ void winCheck(){
                 max=figuresPassed[i];
             }
         }
-        if(max==0){
-            start=(long)millis();
+        Serial.println(max);
+       // if(max==0){
+         //   start=(long)millis();
            // break;
-        }
+        //}
         for(int i=0;i<4;i++){
             if(figuresPassed[i]==max){
-                winner[i]=i;
+              Serial.println(figuresPassed[i]);
+                winner[num_of_winners]=i;
                 num_of_winners++;
             }
         }
@@ -261,16 +268,17 @@ void prepareNewGame(){
     max=0;
     flag=0;
     ledManager();
+    delay(1000);
 }
 
 void soundSpeaker(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
     tone(BUZZER_PIN1, suoniFinali[_s][j]);
     //tone(BUZZER_PIN2, suoniFinali[_s][j]);
-    delay(90);
+    //delay(90);
   }
-  delay(140);
+  //delay(140);
   noTone(BUZZER_PIN1);
   //noTone(BUZZER_PIN2);
-  delay(1000);
+  //delay(1000);
 }
