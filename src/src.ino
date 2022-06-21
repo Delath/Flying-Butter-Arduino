@@ -88,7 +88,10 @@ void configPhase(){
     rotation = value;
     if(digitalRead(BUTTON_PIN)==LOW && difficulty!=0){
         ledOff();
-        int difficultyMolt = MILLIS_PER_DIFFICULTY*difficulty;
+        long difficultyMolt = MILLIS_PER_DIFFICULTY*difficulty;
+        Serial.println(MILLIS_PER_DIFFICULTY);
+        Serial.println(difficulty);
+        Serial.println(difficultyMolt);
         start = (int)millis();
         start=start+difficultyMolt;
         phase=1;
