@@ -229,10 +229,8 @@ void winCheck(){
             break;
         }
     }
+    Serial.println((int)millis());
     if(start<(int)millis()){
-        Serial.println(start);
-        Serial.println(difficulty);
-        Serial.println((int)millis());
         for(int i=0;i<4;i++){
             if(figuresPassed[i]>max){
                 max=figuresPassed[i];
