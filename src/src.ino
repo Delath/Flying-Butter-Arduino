@@ -227,11 +227,11 @@ void winCheck(){
             break;
         }
     }
-    Serial.println(start+"start");
-    Serial.println(difficulty+"diff");
-    Serial.println(MILLIS_PER_DIFFICULTY+"const");
-    Serial.println((int)millis()+"curr");
     if((start+(difficulty*MILLIS_PER_DIFFICULTY))<(int)millis()){
+        Serial.println(start+"start");
+        Serial.println(difficulty+"diff");
+        Serial.println(MILLIS_PER_DIFFICULTY+"const");
+        Serial.println((int)millis()+"curr");
         for(int i=0;i<4;i++){
             if(figuresPassed[i]>max){
                 max=figuresPassed[i];
