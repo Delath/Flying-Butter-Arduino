@@ -235,7 +235,7 @@ void winCheck(){
         }
         if(max==0){
             start=(int)millis();
-            break;
+           // break;
         }
         for(int i=0;i<4;i++){
             if(figuresPassed[i]==max){
