@@ -227,7 +227,7 @@ void winCheck(){
             break;
         }
     }
-    if(start+(difficulty*MILLIS_PER_DIFFICULTY)<(int)millis()){
+    if((start+(difficulty*MILLIS_PER_DIFFICULTY))<(int)millis()){
         for(int i=0;i<4;i++){
             if(figuresPassed[i]>max){
                 max=figuresPassed[i];
