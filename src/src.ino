@@ -5,11 +5,11 @@
 #define LED_PIN 7
 #define NUM_LED 50
 #define SENSOR1_PIN 10 //red
-#define SENSOR2_PIN 6 //green
-#define SENSOR3_PIN 12 //blue
-#define SENSOR4_PIN 13 //yellow
+#define SENSOR2_PIN 9 //green
+#define SENSOR3_PIN 8 //blue
+#define SENSOR4_PIN 5 //yellow
 //#define MILLIS_PER_DIFFICULTY 30000 //30 seconds per difficulty
-int MILLIS_PER_DIFFICULTY=30000 //30 seconds per difficulty
+int MILLIS_PER_DIFFICULTY=30000; //30 seconds per difficulty
 int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
 int phase=0;
@@ -229,6 +229,7 @@ void winCheck(){
             break;
         }
     }
+    Serial.println(start);
     Serial.println((int)millis());
     if(start<(int)millis()){
         for(int i=0;i<4;i++){
