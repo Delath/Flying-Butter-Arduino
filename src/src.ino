@@ -155,7 +155,7 @@ void ledOff(){
 }
 
 void ledOn(int color){
-    for (int i = 0 ; i < 50 ; i++) {
+    for (int i = 0 ; i < 20 ; i++) {
         switch(color){
             case 0:
                 leds[i] = CRGB(0, 255, 0);
@@ -188,10 +188,9 @@ void motionSensors(int i){
 }
 
 void onFigure(int i){
-  
     delay(40);//Might want to adjust this value
-    for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
-        colorLeds(i, (j+(figuresPassed[i]*3)));
+    for (int j = (i*5) ; j < 1+(i*5) ; j++) { //     for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
+        colorLeds(i, (j+(figuresPassed[i])));
         FastLED.show();
         delay(40);//Might want to adjust this value
     }
@@ -216,7 +215,7 @@ void colorLeds(int i, int led){
 }
 
 void colorWinners(int i){
-    for (int j = 1+(i*12) ; j < 13+(i*12) ; j++) {
+    for (int j = (i*5) ; j < 5+(i*5) ; j++) {
         colorLeds(i, j);
     }
 }
