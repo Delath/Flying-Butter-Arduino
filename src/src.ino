@@ -1,4 +1,5 @@
 #include <FastLED.h> 
+
 #define CLK 11
 #define DT 12
 #define BUTTON_PIN 2
@@ -8,7 +9,8 @@
 #define SENSOR2_PIN 9 //green
 #define SENSOR3_PIN 8 //blue
 #define SENSOR4_PIN 5 //yellow
-long MILLIS_PER_DIFFICULTY=10000; //30 seconds per difficulty, modificare qua per tempo
+
+long MILLIS_PER_DIFFICULTY=10000; //30 seconds per difficulty
 int S_pin[4]={SENSOR1_PIN,SENSOR2_PIN,SENSOR3_PIN,SENSOR4_PIN};
 CRGB leds[NUM_LED];
 int phase=0;
@@ -26,7 +28,6 @@ long start;
 int difficulty=0;
 int max=0;
 int flag=0;
-
 //                    0    1    2    3    4    5    6    7    8    9    10   11   12
 const int suoni[] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523};
 //                   DO   DO#   RE  RE#   MI   FA  FA#  SOL  SOL#  LA  LA#   SI   DO
@@ -37,9 +38,10 @@ const int suoniFinali[][4] = {
   {suoni[5], suoni[7], suoni[9], suoni[12]},
 };
 const int BUZZER_PIN1 = A1;
-//const int BUZZER_PIN2 = A2;
-// PIN x speaker non si riesce a sincro
 
+/*---------*/
+/*  setup  */
+/*---------*/
 void setup() {
     Serial.begin(115200);
     FastLED.addLeds<WS2812B, LED_PIN, GRB>(leds, NUM_LED);
@@ -53,6 +55,9 @@ void setup() {
     }
 }
 
+/*--------*/
+/*  loop  */
+/*--------*/
 void loop() {
     switch(phase){
         case 0:
@@ -67,6 +72,9 @@ void loop() {
     }
 }
 
+/*------------------------------*/
+/*  difficulty selection phase  */
+/*------------------------------*/
 void configPhase(){
     value = digitalRead(CLK);
     if(value != rotation){
@@ -93,6 +101,9 @@ void configPhase(){
     }
 }
 
+/*--------------*/
+/*  game phase  */
+/*--------------*/
 void gamePhase(){
     for(int i=0;i<4;i++){
         motionSensors(i);
@@ -100,15 +111,16 @@ void gamePhase(){
     winCheck();
 }
 
+/*-----------------*/
+/*  winners phase  */
+/*-----------------*/
 void endPhase(){
     if(flag==0){
         for(int i=0;i<num_of_winners;i++){
-         
             colorWinners(winner[i]);
             FastLED.show();
             delay(100);
         }
-        
         flag=1;
     }
     for(int i=0;i<4;i++){
@@ -121,6 +133,9 @@ void endPhase(){
     }
 }
 
+/*-------------*/
+/*  functions  */
+/*-------------*/
 void ledManager(){
     if(RotPosition>=0 && RotPosition<10){
         if(enabler!=0){
@@ -189,7 +204,7 @@ void motionSensors(int i){
 
 void onFigure(int i){
     delay(40);//Might want to adjust this value
-    for (int j = (i*5) ; j < 1+(i*5) ; j++) { //     for (int j = 1+(i*12) ; j < 4+(i*12) ; j++) {
+    for (int j = (i*5) ; j < 1+(i*5) ; j++) {
         colorLeds(i, (j+(figuresPassed[i])));
         FastLED.show();
         delay(40);//Might want to adjust this value
@@ -230,8 +245,6 @@ void winCheck(){
             break;
         }
     }
-    //Serial.println(start); //for debugging purposes
-    //Serial.println((long)millis()); //for debugging purposes
     if(start<(long)millis()){
         for(int i=0;i<4;i++){
             if(figuresPassed[i]>max){
@@ -239,10 +252,6 @@ void winCheck(){
             }
         }
         Serial.println(max);
-       // if(max==0){
-         //   start=(long)millis();
-           // break;
-        //}
         for(int i=0;i<4;i++){
             if(figuresPassed[i]==max){
               Serial.println(figuresPassed[i]);
@@ -273,11 +282,6 @@ void prepareNewGame(){
 void soundSpeaker(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
     tone(BUZZER_PIN1, suoniFinali[_s][j]);
-    //tone(BUZZER_PIN2, suoniFinali[_s][j]);
-    //delay(90);
   }
-  //delay(140);
   noTone(BUZZER_PIN1);
-  //noTone(BUZZER_PIN2);
-  //delay(1000);
 }
