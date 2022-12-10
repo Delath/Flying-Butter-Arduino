@@ -29,13 +29,13 @@ int difficulty=0;
 int max=0;
 int flag=0;
 //                    0    1    2    3    4    5    6    7    8    9    10   11   12
-const int suoni[] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523};
+const int sounds[] = {262, 277, 294, 311, 330, 349, 370, 392, 415, 440, 466, 494, 523};
 //                   DO   DO#   RE  RE#   MI   FA  FA#  SOL  SOL#  LA  LA#   SI   DO
-const int suoniFinali[][4] = {
-  {suoni[2], suoni[2], suoni[0], suoni[0]},
-  {suoni[0], suoni[0], suoni[2], suoni[2]},
-  {suoni[2], suoni[0], suoni[2], suoni[2]},
-  {suoni[5], suoni[7], suoni[9], suoni[12]},
+const int finalSounds[][4] = {
+  {sounds[2], sounds[2], sounds[0], sounds[0]},
+  {sounds[0], sounds[0], sounds[2], sounds[2]},
+  {sounds[2], sounds[0], sounds[2], sounds[2]},
+  {sounds[5], sounds[7], sounds[9], sounds[12]},
 };
 const int BUZZER_PIN1 = A1;
 
@@ -281,7 +281,7 @@ void prepareNewGame(){
 
 void soundSpeaker(int _s){
   for (byte j = 0 ; j < 4 ; j++) {
-    tone(BUZZER_PIN1, suoniFinali[_s][j]);
+    tone(BUZZER_PIN1, finalSounds[_s][j]);
   }
   noTone(BUZZER_PIN1);
 }
